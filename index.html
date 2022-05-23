@@ -157,7 +157,22 @@ const divButton = document.getElementById('divButton');
 const equalButton = document.getElementById('equalButton');
 
 //listeners
-
+n1Button.onclick = (e) =>{pushValue(1)};
+n2Button.onclick = (e) =>{pushValue(2)};
+n3Button.onclick = (e) =>{pushValue(3)};
+n4Button.onclick = (e) =>{pushValue(4)};
+n5Button.onclick = (e) =>{pushValue(5)};
+n6Button.onclick = (e) =>{pushValue(6)};
+n7Button.onclick = (e) =>{pushValue(7)};
+n8Button.onclick = (e) =>{pushValue(8)};
+n9Button.onclick = (e) =>{pushValue(9)};
+n0Button.onclick = (e) =>{pushValue(0)};
+clearButton.onclick = (e) =>{pushMode("clear")};
+addButton.onclick = (e) =>{pushMode("add")};
+subButton.onclick = (e) =>{pushMode("sub")};
+mulButton.onclick = (e) =>{pushMode("mul")};
+divButton.onclick = (e) =>{pushMode("div")};
+equalButton.onclick = (e) =>{pushMode("equal")};
 
                                         //basic functions
 //  add
@@ -177,6 +192,18 @@ function div(num1, num2){
     return num1 / num2;
 }
 // Create a new function operate that takes an operator and 2 numbers and then calls one of the above functions on the numbers.
+function pushValue(value){
+
+console.log(value);
+
+}
+
+function pushMode(mode){
+console.log("updated mode to: " + mode);
+
+}
+
+
 
 function calculate(num1, oper, num2){
                     if(oper === "+"){
