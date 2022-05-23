@@ -37,9 +37,22 @@ function mul(num1, num2){
 function div(num1, num2){
     return num1 / num2;
 }
+// Create a new function operate that takes an operator and 2 numbers and then calls one of the above functions on the numbers.
 
-
-
+function calculate(num1, oper, num2){
+                    if(oper === "+"){
+                    return add(num1, num2);
+                    }
+                    if(oper === "-"){
+                    return sub(num1, num2);
+                    }
+                    if(oper === "*"){
+                    return mul(num1, num2);
+                    }
+                    if(oper === "/"){
+                    return div(num1, num2);
+                    }
+}
 
 
 </script>
