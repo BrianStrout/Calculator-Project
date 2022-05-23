@@ -161,7 +161,8 @@ const equalButton = document.getElementById('equalButton');
 let dockedNum1;
 let dockedNum2; 
 let flexNum;
-let currentMode = false;
+let activeMode = false;
+let currentMode = "";
 
 
 
@@ -187,7 +188,7 @@ equalButton.onclick = (e) =>{equalCalc()};
                                         //basic functions
 //  add
 function add(num1, num2){
-    return num1 + num2;
+    return parseInt(num1 + num2);
 }
 // subtract
 function sub(num1, num2){
@@ -208,20 +209,17 @@ function div(num1, num2){
 
 function pushValue(value){
     if(typeof dockedNum1 !== "number"){
-        dockedNum1 = value;
-        updateDisplay(dockedNum1);
-        console.log(dockedNum1);
-        console.log(`value is: ${value} docked 1 is ${dockedNum1} 2: ${dockedNum2} `) 
-   
-    }else if(typeof dockedNum1 === "number" && currentMode === false){
-       dockedNum1 = parseInt( "" + dockedNum1 + value); 
-       updateDisplay(dockedNum1);
-        console.log("value update to: " + dockedNum1) ;
-        console.log(`value is: ${value} docked 1 is ${dockedNum1} 2: ${dockedNum2} `) 
-      
-    }else if(typeof dockedNum1 === "number" && currentMode === true){
-        dockedNum2 = value;
-        console.log(`value is: ${value} docked 1 is ${dockedNum1} 2: ${dockedNum2} `) ;
+                    dockedNum1 = value;
+                    updateDisplay(dockedNum1);
+                    console.log(`dockedNum1 set to: ${dockedNum1}`)
+    }else if(typeof dockedNum1 === "number" && activeMode === false){
+                    dockedNum1 = parseInt( "" + dockedNum1 + value); 
+                    updateDisplay(dockedNum1);
+                    console.log(`dockedNum1 set to: ${dockedNum1}`)
+    }else if(typeof dockedNum1 === "number" && activeMode === true){
+                    dockedNum2 = value;
+                    updateDisplay(dockedNum2);
+                    console.log(`dockedNum2 set to: ${dockedNum2}`)
     }
 
 }
@@ -229,9 +227,9 @@ function pushValue(value){
 
 function pushMode(mode){
                 console.log("updated mode to: " + mode);
-                currentMode = true;
-
-                        if(mode === "add"){
+                activeMode = true;
+                currentMode = mode;
+                              if(mode === "add"){
                                         displaySymbol = "+";
                         }else if(mode === "sub"){
                                         displaySymbol = "-";
@@ -239,6 +237,10 @@ function pushMode(mode){
                                         displaySymbol = "x";
                         }else if(mode === "div"){
                             displaySymbol = "/";
+                        }else if(mode === "clear"){
+                            displaySymbol = "0";
+                            dockedNum1 = 0;
+                            dockedNum2 = 0;
                         }
 
         updateDisplay(displaySymbol);
@@ -246,12 +248,11 @@ function pushMode(mode){
 
 
 function equalCalc(){
-        if(typeof dockedNum1=== "number" && currentMode === true && typeof dockedNum2 === "number"){
-            if(currentMode === "add"){
-                add(dockedNum1, dockedNum2)
-            }
-            console.log('ready to calculate');
-            updateDisplay(dockedNum1)
+        if(typeof dockedNum1=== "number" && activeMode === true && typeof dockedNum2 === "number"){
+            console.log(`attempting to calculate via (${currentMode}) ${dockedNum1} ${dockedNum2}`);
+            console.log(calculate(dockedNum1, currentMode, dockedNum2));
+            console.log('end calculation');
+            updateDisplay(calculate(dockedNum1, currentMode, dockedNum2))
         }
 
 
@@ -262,22 +263,22 @@ function equalCalc(){
 
 
 function calculate(num1, oper, num2){
-                    if(oper === "+"){
+                    if(oper === "add"){
                     return add(num1, num2);
                     }
-                    if(oper === "-"){
+                    if(oper === "sub"){
                     return sub(num1, num2);
                     }
-                    if(oper === "*"){
+                    if(oper === "mul"){
                     return mul(num1, num2);
                     }
-                    if(oper === "/"){
+                    if(oper === "div"){
                     return div(num1, num2);
                     }
 }
 
 function updateDisplay(newNumber){
-    console.log("attempted to update display")
+ //   console.log("attempted to update display")
     display.innerHTML=newNumber;
 
 
