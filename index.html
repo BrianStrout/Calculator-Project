@@ -85,7 +85,7 @@ padding-right: 5px;
         <div class="centerConsole">
                 <div class="hardCase">
                     <!--buttons go here-->
-                    <div class = "display"># place holder#</div>          
+                    <div class = "display">0</div>          
                     <button class = "calcButton" id="1Button">1</button>
                     <button class = "calcButton" id="2Button">2</button>
                     <button class = "calcButton" id="3Button">3</button>
@@ -155,6 +155,13 @@ const subButton = document.getElementById('subButton');
 const mulButton = document.getElementById('mulButton');
 const divButton = document.getElementById('divButton');
 const equalButton = document.getElementById('equalButton');
+let dockedNum1;
+let dockedNum2; 
+let flexNum;
+let currentMode = false;
+
+
+
 
 //listeners
 n1Button.onclick = (e) =>{pushValue(1)};
@@ -172,7 +179,7 @@ addButton.onclick = (e) =>{pushMode("add")};
 subButton.onclick = (e) =>{pushMode("sub")};
 mulButton.onclick = (e) =>{pushMode("mul")};
 divButton.onclick = (e) =>{pushMode("div")};
-equalButton.onclick = (e) =>{pushMode("equal")};
+equalButton.onclick = (e) =>{equalCalc()};
 
                                         //basic functions
 //  add
@@ -192,16 +199,53 @@ function div(num1, num2){
     return num1 / num2;
 }
 // Create a new function operate that takes an operator and 2 numbers and then calls one of the above functions on the numbers.
+
 function pushValue(value){
+    if(typeof dockedNum1 !== "number"){
+        dockedNum1 = value;
+        console.log(dockedNum1);
+        return;
+    }
 
-console.log(value);
 
+
+
+    if(typeof dockedNum1 === "number" && currentMode === false){
+       dockedNum1 = parseInt( "" + dockedNum1 + value); 
+        console.log("value update to: " + dockedNum1) ;
+        return;
+    }
+
+
+
+
+
+
+
+    if(typeof dockedNum1 === "number" && currentMode === true){
+        dockedNum2 = value;
+        console.log(`value is: ${value} docked 1 is ${dockedNum1} 2: ${dockedNum2} `) ;
+
+
+        return;
+    }
 }
 
 function pushMode(mode){
 console.log("updated mode to: " + mode);
 
 }
+function equalCalc(){
+
+        if(typeof dockedNum1=== "number" && currentMode === true && typeof dockedNum2 === "number"){
+
+            console.log('ready to calculate');
+        }
+
+
+
+}
+
 
 
 
