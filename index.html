@@ -63,9 +63,16 @@ padding-right: 5px;
     border-radius: 4px;
     border-color: var(--box-shadow-color);
     /* box-shadow: .5px .5px var(--box-shadow-color); */
-    
+}
+.calcButton :active{
+
+
 
 }
+
+
+
+
 .operButtons{
     grid-column-start: 1;
     grid-column-end: 5;
@@ -99,20 +106,25 @@ padding-right: 5px;
                     <button class = "calcButton" id="1Button">1</button>
                     <button class = "calcButton" id="2Button">2</button>
                     <button class = "calcButton" id="3Button">3</button>
+                    <button class = "calcButton" id="addButton">+</button>
                     <button class = "calcButton" id="4Button">4</button>
                     <button class = "calcButton" id="5Button">5</button>
                     <button class = "calcButton" id="6Button">6</button>
+                    <button class = "calcButton" id="subButton">-</button>
                     <button class = "calcButton" id="7Button">7</button>
                     <button class = "calcButton" id="8Button">8</button>
                     <button class = "calcButton" id="9Button">9</button>
-                    <button class = "calcButton" id="0Button">0</button>
-                    <br>
-                    <button class = "calcButton" id="clearButton">C</button>
-                <!-- <div class = "operbuttons"> -->
-                    <!-- <br><br> -->
-                    <button class = "calcButton" id="addButton">+</button>
-                    <button class = "calcButton" id="subButton">-</button>
+
                     <button class = "calcButton" id="mulButton">x</button>
+                    <button class = "calcButton" id="0Button">.</button>
+                    <button class = "calcButton" id="0Button">0</button>
+              
+                 
+                    <button class = "calcButton" id="clearButton">C</button>
+               
+                    <!-- <br><br> -->
+                   
+                
                     <button class = "calcButton" id="divButton">/</button>   
                 <!-- </div>           -->
                     <button class = "calcButton" id="equalButton">=</button>
@@ -161,6 +173,7 @@ const n7Button = document.getElementById('7Button');
 const n8Button = document.getElementById('8Button');
 const n9Button = document.getElementById('9Button');
 const n0Button = document.getElementById('0Button');
+const decButton = document.getElementById('decButton');
 const clearButton = document.getElementById('clearButton');
 const addButton = document.getElementById('addButton');
 const subButton = document.getElementById('subButton');
@@ -174,7 +187,7 @@ let activeMode = false; //active means am operater mode has been set
 let currentMode = "";
 let calculating = false; //calculating means that we have hit equals and need for a repeat call to repeat the calculation
 let lastPress = "";
-
+let decimalEnabled = true;
 
 
 //listeners
@@ -188,6 +201,7 @@ n7Button.onclick = (e) =>{pushValue(7)};
 n8Button.onclick = (e) =>{pushValue(8)};
 n9Button.onclick = (e) =>{pushValue(9)};
 n0Button.onclick = (e) =>{pushValue(0)};
+decButton.onclick = (e) =>{pushValue(.)};
 clearButton.onclick = (e) =>{pushMode("clear")};
 addButton.onclick = (e) =>{pushMode("add")};
 subButton.onclick = (e) =>{pushMode("sub")};
