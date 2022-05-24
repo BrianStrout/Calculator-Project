@@ -64,8 +64,8 @@ padding-right: 5px;
     border-color: var(--box-shadow-color);
     /* box-shadow: .5px .5px var(--box-shadow-color); */
 }
-.calcButton :active{
-
+.calcButton:active{
+    border-width: 1px 0px 0px 1px;
 
 
 }
@@ -116,7 +116,7 @@ padding-right: 5px;
                     <button class = "calcButton" id="9Button">9</button>
 
                     <button class = "calcButton" id="mulButton">x</button>
-                    <button class = "calcButton" id="0Button">.</button>
+                    <button class = "calcButton" id="decButton">.</button>
                     <button class = "calcButton" id="0Button">0</button>
               
                  
@@ -201,7 +201,7 @@ n7Button.onclick = (e) =>{pushValue(7)};
 n8Button.onclick = (e) =>{pushValue(8)};
 n9Button.onclick = (e) =>{pushValue(9)};
 n0Button.onclick = (e) =>{pushValue(0)};
-decButton.onclick = (e) =>{pushValue(.)};
+decButton.onclick = (e) =>{pushValue(".")};
 clearButton.onclick = (e) =>{pushMode("clear")};
 addButton.onclick = (e) =>{pushMode("add")};
 subButton.onclick = (e) =>{pushMode("sub")};
@@ -242,7 +242,12 @@ function pushValue(value){
 
 
     lastPress = "valuePress";
-
+    if(typeof dockedNum1 !== "number" && value === "."){
+        console.log('test run decimal');
+        dockedNum1 = "0.0";
+                    updateDisplay(dockedNum1);
+                    console.log(`dockedNum1 set to: ${dockedNum1}`)
+    }
     if(typeof dockedNum1 !== "number"){
                     dockedNum1 = value;
                     updateDisplay(dockedNum1);
