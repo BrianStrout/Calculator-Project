@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        :root{
+            --box-shadow-color: rgb(162, 162, 162);
+        }
+
 .container{
     width: 100%;
     height: 100vh;
@@ -55,6 +59,11 @@ padding-right: 5px;
 }
 
 .calcButton{
+    border-width: 0px 2px 2px 0px;
+    border-radius: 4px;
+    border-color: var(--box-shadow-color);
+    /* box-shadow: .5px .5px var(--box-shadow-color); */
+    
 
 }
 .operButtons{
@@ -160,11 +169,11 @@ const divButton = document.getElementById('divButton');
 const equalButton = document.getElementById('equalButton');
 let dockedNum1;
 let dockedNum2; 
-let flexNum;
-let activeMode = false;
+let ghostNum;
+let activeMode = false; //active means am operater mode has been set
 let currentMode = "";
-let calculating = false;
-
+let calculating = false; //calculating means that we have hit equals and need for a repeat call to repeat the calculation
+let lastPress = "";
 
 
 
@@ -207,24 +216,34 @@ function div(num1, num2){
 
 
 
-
+//push values updates dockedNum variables and pushes the most recent value to the display
 function pushValue(value){
 
-    if(calculating === true){ pushMode("clear");    }
+    if(calculating === true){
+        pushMode("clear");
+        console.log("attempt to reset from number input");
+        stat();
+        console.log("...");
+      }
 
+
+    lastPress = "valuePress";
 
     if(typeof dockedNum1 !== "number"){
                     dockedNum1 = value;
                     updateDisplay(dockedNum1);
                     console.log(`dockedNum1 set to: ${dockedNum1}`)
+
     }else if(typeof dockedNum1 === "number" && activeMode === false){
                     dockedNum1 = parseInt( "" + dockedNum1 + value); 
                     updateDisplay(dockedNum1);
                     console.log(`dockedNum1 set to: ${dockedNum1}`)
+
     }else if(typeof dockedNum1 === "number" && activeMode === true && typeof dockedNum2 !== "number"){
                     dockedNum2 = value;
                     updateDisplay(dockedNum2);
-                    console.log(`dockedNum2 set to: ${dockedNum2}`)
+                    console.log(`dockedNum2 init set to: ${dockedNum2}`)
+                   // calculating = false;
     }else if(typeof dockedNum1 === "number" && activeMode === true && typeof dockedNum2 === "number"){
                     dockedNum2 = parseInt( "" + dockedNum2 + value); 
                     updateDisplay(dockedNum2);
@@ -233,13 +252,17 @@ function pushValue(value){
 
 }
 
+
+
+
 //Push mode updates the display symbol's value and runs updateDisplay with it. Also Clear exists here
 function pushMode(mode){
-                console.log("updated mode to: " + mode);
-                activeMode = true;
-                if(calculating === true){dockedNum2 = undefined;}
-                currentMode = mode;
-                              if(mode === "add"){
+    
+        // calculating = false;     
+        currentMode = mode;
+        console.log("mode updated to: " + currentMode);
+                            //update display
+                        if(mode === "add"){
                                         displaySymbol = "+";
                         }else if(mode === "sub"){
                                         displaySymbol = "-";
@@ -251,26 +274,64 @@ function pushMode(mode){
                             displaySymbol = "0";
                             dockedNum1 = 0;
                             dockedNum2 = undefined;
+                            ghostNum = undefined;
                             calculating = false;
                             activeMode = false;
                             mode = "";
                         }
-
         updateDisplay(displaySymbol);
+       
+        if (lastPress === "modePress"){ console.log("mode switch"); return;}
+                
+
+                activeMode = true;
+
+                if(typeof dockedNum1 === "number" && activeMode === true && calculating === false && typeof dockedNum2 === "number"){
+                    equalCalc();
+                    dockedNum2=undefined;
+                }   
+                lastPress = "modePress";
+                calculating = false;
+                 // if (lastPress !== "modePress"){
+                    //     console.log(".........2ndbranch activated")
+                    //    // equalCalc();
+                    // }
 }
 
 
 function equalCalc(){
-
+        lastPress ="equalPress";
     // if(calculating === false){
-        if(typeof dockedNum1=== "number" && activeMode === true && typeof dockedNum2 === "number"){
-            console.log(`attempting to calculate via (${currentMode}) ${dockedNum1} ${dockedNum2}`);            
-            updateDisplay(calculate(dockedNum1, currentMode, dockedNum2))
-            dockedNum1 = calculate(dockedNum1, currentMode, dockedNum2)
-            console.log('end calculation');
-            calculating = true;
-            return;
-        }
+        if(typeof dockedNum1=== "number" && activeMode === true && typeof dockedNum2 === "number")
+                    {
+                    console.log(`calculating  ${dockedNum1} ${currentMode} ${dockedNum2}`);            
+                    dockedNum1 = calculate(dockedNum1, currentMode, dockedNum2)
+                    updateDisplay(dockedNum1); 
+                    dockedNum2 = undefined;
+                    console.log(`...result is ${dockedNum1}`);    
+                    console.log('...end calculation');
+                    calculating = true;
+                    return;
+
+        }else  if(typeof dockedNum1=== "number" && activeMode === true && typeof dockedNum2 !== "number"){
+                    console.log(`calculating with ghost... ${dockedNum1} ${currentMode} ${ghostNum}`);            
+                   
+                    dockedNum1 = calculate(dockedNum1, currentMode, ghostNum)
+                    updateDisplay(dockedNum1);                   
+                    console.log(`...result is ${dockedNum1}`);    
+                    console.log('...end calculation');
+                    calculating = true;
+                    return;
+                    }
+        
+
+
+
+
+
+
+
+
 
             // what i need to do here is make it so if some pushes equals again, it re runs the last operation but if someone
             // push an operator it continues the operations.
@@ -299,8 +360,10 @@ function calculate(num1, oper, num2){
                     }
 }
 
+//updates ghost and pushes display to DOM
 function updateDisplay(newNumber){
  //   console.log("attempted to update display")
+    if(typeof newNumber === "number"){ghostNum = newNumber}
     display.innerHTML=newNumber;
 
 
@@ -311,17 +374,15 @@ function updateDisplay(newNumber){
 
 
 function stat(){
-console.log("docked Number 1: " + dockedNum1);
-console.log("docked Number 2: " + dockedNum2);
-console.log("current mode: " + currentMode);
-console.log("active: " + activeMode);
-console.log("calculating: " + calculating);
-
-
-
-
-
-
+console.log("...docked#1: " + dockedNum1 + " and is a: " + typeof(dockedNum1));
+console.log("...docked#2: " + dockedNum2 + " and is a: " + typeof(dockedNum2));
+console.log("...ghost:     " + ghostNum);
+console.log("...current mode: " + currentMode);
+console.log("...active: " + activeMode);
+console.log("...calculating: " + calculating);
+console.log("...last press: " + lastPress);
+console.log("...ghost:     " + ghostNum);
+return;
 }
 </script>
 </html>
@@ -343,8 +404,8 @@ console.log("calculating: " + calculating);
                             There should also be a display for the calculator, go ahead and fill it with some dummy numbers so you can get it looking right.
                             Add a “clear” button.
 
-Create the functions that populate the display when you click the number buttons… 
-you should be storing the ‘display value’ in a variable somewhere for use in the next step.
+                            Create the functions that populate the display when you click the number buttons… 
+                            you should be storing the ‘display value’ in a variable somewhere for use in the next step.
 
 
 
@@ -360,6 +421,10 @@ You should round answers with long decimals so that they don’t overflow the sc
 Pressing = before entering all of the numbers or an operator could cause problems!
 Pressing “clear” should wipe out any existing data.. make sure the user is really starting fresh after pressing “clear”
 Display a snarky error message if the user tries to divide by 0… don’t let it crash your calculator!
+
+
+
+
 EXTRA CREDIT: Users can get floating point numbers if they do the math required to get one, but they can’t type them in yet. Add a . button and let users input decimals! Make sure you don’t let them type more than one though: 12.3.56.5. It is hard to do math on these numbers. (disable the decimal button if there’s already one in the display)
 EXTRA CREDIT: Make it look nice! This is a great project to practice your CSS skills. At least make the operations a different color from the keypad buttons.
 EXTRA CREDIT: Add a “backspace” button, so the user can undo if they click the wrong number.
