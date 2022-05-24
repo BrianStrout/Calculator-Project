@@ -209,6 +209,10 @@ function div(num1, num2){
 
 
 function pushValue(value){
+
+    if(calculating === true){ pushMode("clear");    }
+
+
     if(typeof dockedNum1 !== "number"){
                     dockedNum1 = value;
                     updateDisplay(dockedNum1);
@@ -229,10 +233,11 @@ function pushValue(value){
 
 }
 
-
+//Push mode updates the display symbol's value and runs updateDisplay with it. Also Clear exists here
 function pushMode(mode){
                 console.log("updated mode to: " + mode);
                 activeMode = true;
+                if(calculating === true){dockedNum2 = undefined;}
                 currentMode = mode;
                               if(mode === "add"){
                                         displaySymbol = "+";
@@ -245,8 +250,9 @@ function pushMode(mode){
                         }else if(mode === "clear"){
                             displaySymbol = "0";
                             dockedNum1 = 0;
-                            dockedNum2 = 0;
+                            dockedNum2 = undefined;
                             calculating = false;
+                            activeMode = false;
                             mode = "";
                         }
 
@@ -262,6 +268,7 @@ function equalCalc(){
             updateDisplay(calculate(dockedNum1, currentMode, dockedNum2))
             dockedNum1 = calculate(dockedNum1, currentMode, dockedNum2)
             console.log('end calculation');
+            calculating = true;
             return;
         }
 
@@ -301,11 +308,21 @@ function updateDisplay(newNumber){
 }
 
 
-function clearDisplay(){
+
+
+function stat(){
+console.log("docked Number 1: " + dockedNum1);
+console.log("docked Number 2: " + dockedNum2);
+console.log("current mode: " + currentMode);
+console.log("active: " + activeMode);
+console.log("calculating: " + calculating);
+
+
+
+
+
 
 }
-
-
 </script>
 </html>
 
