@@ -163,6 +163,7 @@ let dockedNum2;
 let flexNum;
 let activeMode = false;
 let currentMode = "";
+let calculating = false;
 
 
 
@@ -245,6 +246,8 @@ function pushMode(mode){
                             displaySymbol = "0";
                             dockedNum1 = 0;
                             dockedNum2 = 0;
+                            calculating = false;
+                            mode = "";
                         }
 
         updateDisplay(displaySymbol);
@@ -252,16 +255,24 @@ function pushMode(mode){
 
 
 function equalCalc(){
+
+    // if(calculating === false){
         if(typeof dockedNum1=== "number" && activeMode === true && typeof dockedNum2 === "number"){
-            console.log(`attempting to calculate via (${currentMode}) ${dockedNum1} ${dockedNum2}`);
-            console.log(calculate(dockedNum1, currentMode, dockedNum2));
-            console.log('end calculation');
+            console.log(`attempting to calculate via (${currentMode}) ${dockedNum1} ${dockedNum2}`);            
             updateDisplay(calculate(dockedNum1, currentMode, dockedNum2))
+            dockedNum1 = calculate(dockedNum1, currentMode, dockedNum2)
+            console.log('end calculation');
+            return;
+        }
+
+            // what i need to do here is make it so if some pushes equals again, it re runs the last operation but if someone
+            // push an operator it continues the operations.
+
         }
 
 
 
-}
+
 
 
 
