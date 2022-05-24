@@ -216,8 +216,12 @@ function pushValue(value){
                     dockedNum1 = parseInt( "" + dockedNum1 + value); 
                     updateDisplay(dockedNum1);
                     console.log(`dockedNum1 set to: ${dockedNum1}`)
-    }else if(typeof dockedNum1 === "number" && activeMode === true){
+    }else if(typeof dockedNum1 === "number" && activeMode === true && typeof dockedNum2 !== "number"){
                     dockedNum2 = value;
+                    updateDisplay(dockedNum2);
+                    console.log(`dockedNum2 set to: ${dockedNum2}`)
+    }else if(typeof dockedNum1 === "number" && activeMode === true && typeof dockedNum2 === "number"){
+                    dockedNum2 = parseInt( "" + dockedNum2 + value); 
                     updateDisplay(dockedNum2);
                     console.log(`dockedNum2 set to: ${dockedNum2}`)
     }
